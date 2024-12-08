@@ -1,10 +1,10 @@
 <template>
     <UContainer class="py-8">
-        <div v-if="challenge">
+        <div v-if="challenge" class="overflow-auto">
             <h1 class="text-2xl font-bold mb-6">{{ challenge.title }}</h1>
             <img :src="`/images/challenges/${challenge.fileName}`" :alt="challenge.title"
-                class="w-full max-w-2xl mx-auto mb-8 rounded-lg shadow-lg">
-            <div class="max-w-2xl mx-auto">
+                class="max-w-2xl max-h-40 mx-auto mb-8 rounded-lg shadow-lg">
+            <div class="max-w-2xl mx-auto flex justify-center items-center flex-col">
 
                 <UTextarea v-model="userPrompt" placeholder="Write your prompt here..." :rows="4" />
 
@@ -12,7 +12,7 @@
             </div>
             <div v-if="generatedImage" class="mt-8">
                 <h2 class="text-xl font-bold mb-4">Generated Image</h2>
-                <img :src="generatedImage" alt="Generated image" class="w-full max-w-2xl mx-auto rounded-lg shadow-lg">
+                <img :src="generatedImage" alt="Generated image" class="max-h-40 max-w-2xl mx-auto rounded-lg shadow-lg">
             </div>
         </div>
         <p v-else-if="error">{{ error }}</p>
