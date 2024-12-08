@@ -44,10 +44,7 @@ async function submitPrompt() {
     isGenerating.value = true
     try {
 
-        const response = await $fetch(`/api/images/generate?prompt=${encodeURIComponent(userPrompt.value)}`, {
-            responseType: 'blob'
-        })
-
+        const response = await $fetch(`/api/images/generate?prompt=${encodeURIComponent(userPrompt.value)}`)
         console.log(response)
         generatedImage.value = response
     } catch (error) {
