@@ -10,7 +10,7 @@
         <img :src="`/images/challenges/${challenge.fileName}`" :alt="challenge.title" class="w-full h-48 object-cover">
 
         <template #footer>
-          <UButton label="View Challenge" :to="`/challenge/${challenge.fileName}`" />
+          <UButton label="View Challenge" :to="`/${challenge.fileName}`" />
         </template>
       </UCard>
     </div>
