@@ -1,14 +1,18 @@
 <template>
-    <UContainer>
+    <UContainer class="py-8">
         <div v-if="challenge">
             <h1 class="text-2xl font-bold mb-6">{{ challenge.title }}</h1>
             <img :src="`/images/challenges/${challenge.fileName}`" :alt="challenge.title"
-                class="max-w-2xl max-h-80 mx-auto mb-8 rounded-lg shadow-lg">
+                class="w-full max-w-2xl mx-auto mb-8 rounded-lg shadow-lg">
             <div class="max-w-2xl mx-auto">
-                <form label="Your prompt">
-                    <UTextarea v-model="userPrompt" placeholder="Write your prompt here..." :rows="4" />
-                </form>
-                <UButton class="mt-4" @click="submitPrompt">Submit Prompt</UButton>
+
+                <UTextarea v-model="userPrompt" placeholder="Write your prompt here..." :rows="4" />
+
+                <UButton class="mt-4" :loading="isGenerating" @click="submitPrompt">Generate Image</UButton>
+            </div>
+            <div v-if="generatedImage" class="mt-8">
+                <h2 class="text-xl font-bold mb-4">Generated Image</h2>
+                <img :src="generatedImage" alt="Generated image" class="w-full max-w-2xl mx-auto rounded-lg shadow-lg">
             </div>
         </div>
         <p v-else-if="error">{{ error }}</p>
@@ -28,10 +32,29 @@ interface Challenge {
 const { data: challenge, error } = await useFetch<Challenge>(`/api/challenge/${challengeId}`)
 
 const userPrompt = ref('')
+const generatedImage = ref<string | null>(null)
+const isGenerating = ref(false)
 
 async function submitPrompt() {
-    // TODO: Implement prompt submission logic
-    console.log('Submitted prompt:', userPrompt.value)
-    // You can add logic here to send the prompt to your backend
+    if (!userPrompt.value.trim()) {
+        alert('Please enter a prompt')
+        return
+    }
+
+    isGenerating.value = true
+    try {
+
+        const response = await $fetch(`/api/images/generate?prompt=${encodeURIComponent(userPrompt.value)}`, {
+            responseType: 'blob'
+        })
+
+        console.log(response)
+        generatedImage.value = response
+    } catch (error) {
+        console.error('Error generating image:', error)
+        alert('Failed to generate image. Please try again.')
+    } finally {
+        isGenerating.value = false
+    }
 }
 </script>

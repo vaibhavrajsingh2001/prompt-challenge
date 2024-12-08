@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     kv: true,
     blob: true,
     cache: true,
+    ai: true
   },
   nitro: {
     experimental: {

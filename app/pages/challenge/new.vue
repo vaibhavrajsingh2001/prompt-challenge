@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+const toast = useToast()
+
 async function createChallenge(e: Event) {
   const form = e.target as HTMLFormElement
   const formData = new FormData(form)
@@ -29,7 +31,10 @@ async function createChallenge(e: Event) {
       body: formData
     })
     console.log(response)
-    form.reset()
+
+    toast.add({
+      title: 'Challenge created successfully'
+    })
     // You can add a success message or redirect here
   } catch (error) {
     console.error('Error creating challenge:', error)
